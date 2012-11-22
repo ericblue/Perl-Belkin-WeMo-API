@@ -9,12 +9,62 @@ The Belkin WeMo Switch (http://www.belkin.com/us/wemo-switch) lets you turn elec
 The WeMo Switch uses your existing home Wi-Fi network to provide wireless control of TVs, lamps, stereos, and more.
 This library allows basic control of the switches (turning on/off and getting device info) through UPNP
 
-Methods
+[Modules]
 
-* getFriendlyName – Get the name of the switch
-* on – Turn switch on
-* off – Turn switch off
-* toggle – Toggle switch on/off
+1) WebService::Belkin::WeMo::Discover
+
+Used for searching for Belkin devices on the network using UPNP.  Search results can be stored
+and loaded to speed up operations.
+
+Methods:
+
+    * search - Performs UPNP search
+    * save - Saves searched devices to disk
+    * load - Loads searched devices from disk
+
+Sample Usage:
+
+my $wemoDiscover = WebService::Belkin::WeMo::Discover->new();
+
+# Perform UPNP Search for all Belkin WeMo switches
+my $discovered = $wemoDiscover->search();
+
+# Save device info to make API calls faster - eliminates search on startup
+$wemoDiscover->save("/tmp/belkin.db");
+
+# Load from storage
+my $discovered = $wemoDiscover->load("/tmp/belkin.db");
+
+foreach my $ip (keys %{$discovered}) {
+	print "IP = $ip\n";
+	print "Friendly Name = $discovered->{$ip}->{'name'}\n"
+}
+
+
+2) WebService::Belkin::WeMo::Device
+
+The core module for controlling WeMo devices.
+
+Methods:
+
+    * getFriendlyName - Get the name of the switch
+    * isSwitchOn - Returns true (1) or false (0)
+    * on - Turn switch on
+    * off - Turn switch off
+    * toggle - Toggle switch on/off
+
+Sample Usage:
+
+my $wemo = WebService::Belkin::WeMo::Device->new(ip => '192.168.2.126', db => '/tmp/belkin.db');
+
+print "Name = " . $wemo->getFriendlyName() . "\n";
+print "On/Off = " . $wemo->isSwitchOn() . "\n"; 
+
+print "Turning off...\n";
+$wemo->off();
+
+print "Turning on...\n";
+$wemo->on();
 
 [Change Log]
 
