@@ -1,0 +1,20 @@
+# Author: Eric Blue
+# 	url   = http://eric-blue.com/belkin-wemo-api/
+#   email = ericblue76 (at) gmail (dot) com
+# Project: Belkin WeMo API - Uses UPNP to control Belkin Wemo Switches
+[Overview]
+
+The Belkin WeMo Switch lets you turn electronic devices on or off from anywhere inside–or outside–your home.
+The WeMo Switch uses your existing home Wi-Fi network to provide wireless control of TVs, lamps, stereos, and more.
+This library allows basic control of the switches (turning on/off and getting device info) through UPNP
+
+Methods
+
+* getFriendlyName – Get the name of the switch
+* on – Turn switch on
+* off – Turn switch off
+* toggle – Toggle switch on/off
+
+[Change Log]
+
+- 11/21/12 – Initial release

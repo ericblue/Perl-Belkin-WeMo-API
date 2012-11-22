@@ -1,0 +1,31 @@
+[UPNP/SOAP]
+
+The WeMo HTTP server listens on port 49153.  UPNP service discovery finds info like:
+
+CACHE-CONTROL: max-age=86400
+DATE: Wed, 21 Nov 2012 16:07:39 GMT
+EXT:
+LOCATION: http://192.168.2.126:49153/setup.xml
+SERVER: Linux/2.6.21, UPnP/1.0, Portable SDK for UPnP devices/1.6.6
+X-User-Agent: redsonic
+ST: upnp:rootdevice
+USN: uuid:Socket-1_0-221243K0100968::upnp:rootdevice
+
+[Services]
+
+Services are fully defined in the setup.xml, but here's a brief list:
+
+* urn:Belkin:service:WiFiSetup:1
+* urn:Belkin:service:timesync:1
+* urn:Belkin:service:basicevent:1
+* urn:Belkin:service:firmwareupdate:1
+* urn:Belkin:service:rules:1
+* urn:Belkin:service:metainfo:1
+*urn:Belkin:service:remoteaccess:1
+
+Note that this library currently supports some services under basicevent. It woulnd't take too much effort to add
+other services as needed.
+
+[Debugging]
+
+GUPnP (https://live.gnome.org/GUPnP/) is highly useful for browsing the UPNP capabilities and even invoking some commands.
