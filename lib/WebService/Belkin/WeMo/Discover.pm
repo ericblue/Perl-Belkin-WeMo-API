@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# $Id: Discover.pm,v 1.1 2012-11-22 01:27:30 ericblue76 Exp $
+# $Id: Discover.pm,v 1.2 2012-11-25 20:01:52 ericblue76 Exp $
 #
 # Author:       Eric Blue - ericblue76@gmail.com
 # Project:      Belkin Wemo API
@@ -10,9 +10,6 @@
 # ABSTRACT: Uses UPNP to control Belkin Wemo Switches
 
 package WebService::Belkin::WeMo::Discover;
-{
-  $WebService::Belkin::WeMo::Discover::VERSION = '0.9';
-}
 
 use Storable;
 use Carp;
@@ -44,12 +41,24 @@ sub search {
 
 	foreach my $device (@devices) {
 		my $device_type = $device->getdevicetype();
-		if ( $device_type =~ /urn:Belkin:device:controllee/ ) {
 
-			my ($ip) =
-			  $device->getssdp() =~ /LOCATION: http:\/\/(.*):49153\/setup.xml/;
+		if ( $device_type =~ /urn:Belkin:device/ ) {
+			
+			my $type;
+			if ($device_type =~/controllee/) {
+				$type = "switch";
+			} elsif ($device_type =~/sensor/) {
+				$type = "sensor";
+			} else {
+				$type = "unknown";
+			}
+			
+			my ( $ip, $port ) =
+			  $device->getssdp() =~ /LOCATION: http:\/\/(.*):(.*)\/setup.xml/;
 			$discovered->{$ip} = {
 				ip     => $ip,
+				port   => $port,
+				type   => $type,
 				name   => $device->getfriendlyname(),
 				device => $device
 			};
@@ -66,8 +75,8 @@ sub save {
 
 	my $self = shift;
 	my ($filename) = @_;
-	
-	store($self->{_discovered}, $filename);
+
+	store( $self->{_discovered}, $filename );
 
 }
 
@@ -75,17 +84,15 @@ sub load {
 
 	my $self = shift;
 	my ($filename) = @_;
-	
-	if (! -e $filename) {
+
+	if ( ! -e $filename ) {
 		croak "Can't load device data $filename!\n";
 	}
-	
+
 	my $loaded = retrieve($filename);
 	return $loaded;
 
 }
-
-
 
 1;
 
