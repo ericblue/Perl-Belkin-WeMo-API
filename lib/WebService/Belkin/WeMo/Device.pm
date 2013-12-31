@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# $Id: Device.pm,v 1.3 2012-11-25 20:01:52 ericblue76 Exp $
+# $Id: Device.pm,v 1.4 2013-12-31 03:29:22 ericblue76 Exp $
 #
 # Author:       Eric Blue - ericblue76@gmail.com
 # Project:      Belkin Wemo API
@@ -46,6 +46,8 @@ sub new {
 		}
 
 		$self->{_device} = $discovered->{ $self->{'_ip'} }->{'device'};
+		$self->{_type} = $discovered->{ $self->{'_ip'} }->{'type'};
+		
 	}
 
 	if ( defined( $params{'name'} ) ) {
@@ -81,6 +83,19 @@ sub new {
 
 }
 
+sub getType() {
+    
+    my $self = shift;
+    
+    if (defined($self->{_type})) {
+        return $self->{_type};
+    } else {
+        return "undefined";
+    }
+    
+    
+}
+
 sub getFriendlyName() {
 
 	my $self = shift;
@@ -112,6 +127,11 @@ sub isSwitchOn() {
 sub toggleSwitch() {
 
 	my $self = shift;
+	
+	if ($self->getType() eq "sensor") {
+        warn "Method only supported for switches, not sensors.\n";
+	    return;
+	}
 
 	my $state  = $self->isSwitchOn();
 	my $toggle = $state ^= 1;
@@ -121,9 +141,38 @@ sub toggleSwitch() {
 
 }
 
+sub getBinaryState() {
+
+	my $self = shift;
+
+	my $resp =
+	  $self->{_basicService}
+	  ->postaction( "GetBinaryState");
+	if ( $resp->getstatuscode() == 200 ) {
+
+		my $state = $resp->getargumentlist()->{'BinaryState'};
+		if ($state == 1) { 
+		    return "on";
+		} elsif ($state == 0) {
+		    return "off";
+		} else {
+		    return "unknown";
+		}
+	}
+	else {
+		croak "Got status code " . $resp->getstatuscode() . "!\n";
+	}
+
+}
+
 sub on() {
 
 	my $self = shift;
+	
+    if ($self->getType() eq "sensor") {
+        warn "Method only supported for switches, not sensors.\n";
+	    return;
+	}
 
 	my $resp =
 	  $self->{_basicService}
@@ -142,6 +191,11 @@ sub on() {
 sub off() {
 
 	my $self = shift;
+	
+	if ($self->getType() eq "sensor") {
+	    warn "Method only supported for switches, not sensors.\n";
+	    return;
+	}
 
 	my $resp =
 	  $self->{_basicService}
@@ -150,24 +204,6 @@ sub off() {
 
 		# Not this will be Error if the switch is already off
 		return $resp->getargumentlist()->{'BinaryState'};
-	}
-	else {
-		croak "Got status code " . $resp->getstatuscode() . "!\n";
-	}
-
-}
-
-sub test() {
-
-	my $self = shift;
-
-	my $resp =
-	  $self->{_basicService}
-	  ->postaction( "GetLogFileURL");
-	if ( $resp->getstatuscode() == 200 ) {
-
-		# Not this will be Error if the switch is already off
-		print Dumper $resp->getargumentlist();
 	}
 	else {
 		croak "Got status code " . $resp->getstatuscode() . "!\n";
@@ -226,7 +262,7 @@ Eric Blue <ericblue76@gmail.com> - http://eric-blue.com
 
 =head1 COPYRIGHT
 
-Copyright (c) 2012 Eric Blue. This program is free
+Copyright (c) 2013 Eric Blue. This program is free
 software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
 

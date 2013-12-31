@@ -1,0 +1,4 @@
+- Add support for lookup by name along with ip
+- Add support for motion sensor
+- Figure out how to subscribe to event notifications
+- Grok charles output to see client/server interaction

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# $Id: Discover.pm,v 1.2 2012-11-25 20:01:52 ericblue76 Exp $
+# $Id: Discover.pm,v 1.3 2013-12-31 03:29:22 ericblue76 Exp $
 #
 # Author:       Eric Blue - ericblue76@gmail.com
 # Project:      Belkin Wemo API
@@ -12,6 +12,8 @@
 package WebService::Belkin::WeMo::Discover;
 
 use Storable;
+use Data::Dumper;
+use Net::UPnP::ControlPoint;
 use Carp;
 
 use strict;
@@ -143,7 +145,7 @@ Eric Blue <ericblue76@gmail.com> - http://eric-blue.com
 
 =head1 COPYRIGHT
 
-Copyright (c) 2012 Eric Blue. This program is free
+Copyright (c) 2013 Eric Blue. This program is free
 software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
 

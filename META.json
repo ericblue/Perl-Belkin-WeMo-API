@@ -40,7 +40,7 @@
    "resources" : {
       "homepage" : "http://search.cpan.org/dist/WebService-Belkin-WeMo/"
    },
-   "version" : "0.9",
+   "version" : "1.0",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.010001"
@@ -155,11 +155,6 @@
             "class" : "Dist::Zilla::Plugin::PkgVersion",
             "name" : "PkgVersion",
             "version" : "4.300028"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
-            "name" : "ReadmeAnyFromPod",
-            "version" : "0.120120"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",

@@ -1,0 +1,10 @@
+Revision history for Perl extension UPnP.
+
+2013-12-30 Eric Blue <ericblue76@gmail.com>
+	* v1.0
+	* Minor changes to detect if Wemo device is a switch before toggling on/off
+	* Tested with firmware version WeMo_US_2.00.2769.PVT
+
+2012-11-21 Eric Blue <ericblue76@gmail.com>
+	* v.9
+	* Initial release to Github

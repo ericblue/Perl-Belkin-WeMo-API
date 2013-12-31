@@ -5,7 +5,7 @@
 
 [Overview]
 
-The Belkin WeMo Switch (http://www.belkin.com/us/wemo-switch) lets you turn electronic devices on or off from anywhere inside–or outside–your home.
+The Belkin WeMo Switch (http://www.belkin.com/us/wemo-switch) lets you turn electronic devices on or off from anywhere inside or outside your home.
 The WeMo Switch uses your existing home Wi-Fi network to provide wireless control of TVs, lamps, stereos, and more.
 This library allows basic control of the switches (turning on/off and getting device info) through UPNP
 
@@ -30,10 +30,10 @@ my $wemoDiscover = WebService::Belkin::WeMo::Discover->new();
 my $discovered = $wemoDiscover->search();
 
 # Save device info to make API calls faster - eliminates search on startup
-$wemoDiscover->save("/tmp/belkin.db");
+$wemoDiscover->save("/etc/belkin.db");
 
 # Load from storage
-my $discovered = $wemoDiscover->load("/tmp/belkin.db");
+my $discovered = $wemoDiscover->load("/etc/belkin.db");
 
 foreach my $ip (keys %{$discovered}) {
 	print "IP = $ip\n";
@@ -56,12 +56,13 @@ Methods:
 Sample Usage:
 
 # Note: excluding 'db' will force a search each time - expect a 1-3 second delay for UPNP discover
+# This dependency on the search will be fixed in a future release
 
-my $wemo = WebService::Belkin::WeMo::Device->new(ip => '192.168.2.126', db => '/tmp/belkin.db');
+my $wemo = WebService::Belkin::WeMo::Device->new(ip => '192.168.2.126', db => '/etc/belkin.db');
 
 OR
 
-my $wemo = WebService::Belkin::WeMo::Device->new(name => 'Livingroom Light', db => '/tmp/belkin.db');
+my $wemo = WebService::Belkin::WeMo::Device->new(name => 'Livingroom Light', db => '/etc/belkin.db');
 
 print "Name = " . $wemo->getFriendlyName() . "\n";
 print "On/Off = " . $wemo->isSwitchOn() . "\n"; 
@@ -72,6 +73,3 @@ $wemo->off();
 print "Turning on...\n";
 $wemo->on();	
 
-[Change Log]
-
-- 11/21/12 – Initial release
